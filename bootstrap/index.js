@@ -1,3 +1,14 @@
 exports.handler = async (event, context) => {
-    console.log('Hello World!!!');
+    var response = {
+        "statusCode": 200,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "isBase64Encoded": false,
+        "body": {
+            message: "Hello World!!!"
+        }
+    }
+
+    return response;
 };
