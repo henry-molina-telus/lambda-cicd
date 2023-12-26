@@ -23,7 +23,7 @@ jobs:
         run: docker build -t lambda-api .
 
       - name: Tag Docker Image
-        run: docker tag lambda-api:latest ${{ steps.login-ecr.outputs.registry }}/learning/lambda-api:latest
+        run: docker tag lambda-api:latest ${{ steps.login-ecr.outputs.registry }}/learning:lambda-api:latest
   
       - name: Push Docker Image to ECR
-        run: docker push ${{ steps.login-ecr.outputs.registry }}/learning/lambda-api:latest
+        run: docker push ${{ steps.login-ecr.outputs.registry }}/learning:lambda-api:latest
