@@ -1,0 +1,38 @@
+name: Continuous deployment
+
+on:
+  workflow_run:
+    workflows: ['Continuous integration']
+    branches: [master]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-1
+
+      - name: ZIP build
+        run: zip ${{ github.run_id }}.zip bootstrap
+
+      - name: Upload to S3
+        run: aws s3 cp ${{ github.run_id }}.zip s3://api_bucket_040209405785/${{ github.run_id }}.zip
+
+      - name: Update lambda function code
+        run: aws lambda update-function-code --function-name api --s3-bucket api_bucket_040209405785 --s3-key ${{ github.run_id }}.zip
+
+      - name: Sleep for 5 seconds
+        run: sleep 5s
+        shell: bash
+
+      - name: Release lambda function version
+        run: aws lambda publish-version --function-name api --description ${{ github.run_id }}
