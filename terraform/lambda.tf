@@ -10,7 +10,7 @@ resource "aws_lambda_function" "api_lambda" {
    */
   architectures = ["arm64"]
   runtime       = "nodejs18.x"
-  handler       = "index.handler"
+  handler       = "bootstrap/index.handler"
   memory_size   = 128
   publish       = true
 
