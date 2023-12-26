@@ -5,9 +5,9 @@ exports.handler = async (event, context) => {
             "Content-Type": "application/json"
         },
         "isBase64Encoded": false,
-        "body": {
+        "body": JSON.stringify({
             message: "Hello World!!!"
-        }
+        })
     }
 
     return response;
