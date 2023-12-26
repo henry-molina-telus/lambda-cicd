@@ -49,38 +49,3 @@ resource "aws_lambda_permission" "api_gateway_lambda_permission" {
   qualifier     = aws_lambda_alias.api_lambda_alias.name
   source_arn    = "${aws_apigatewayv2_api.api_gateway.execution_arn}/*/*"
 }
-
-data "aws_iam_policy_document" "ecr_policy_data" {
-  statement {
-    sid    = "ECR Policy for CI/CD"
-    effect = "Allow"
-
-    principals {
-      type        = "AWS"
-      identifiers = ["040209405785"]
-    }
-
-    actions = [
-      "ecr:GetDownloadUrlForLayer",
-      "ecr:BatchGetImage",
-      "ecr:BatchCheckLayerAvailability",
-      "ecr:PutImage",
-      "ecr:InitiateLayerUpload",
-      "ecr:UploadLayerPart",
-      "ecr:CompleteLayerUpload",
-      "ecr:DescribeRepositories",
-      "ecr:GetRepositoryPolicy",
-      "ecr:ListImages",
-      "ecr:DeleteRepository",
-      "ecr:BatchDeleteImage",
-      "ecr:SetRepositoryPolicy",
-      "ecr:DeleteRepositoryPolicy",
-      "ecr:GetAuthorizationToken"
-    ]
-  }
-}
-
-resource "aws_ecr_repository_policy" "ecr_policy" {
-  repository = aws_ecr_repository.ecr_repository.name
-  policy     = data.aws_iam_policy_document.ecr_policy_data.json
-}
