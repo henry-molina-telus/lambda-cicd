@@ -1,5 +1,5 @@
-FROM public.ecr.aws/lambda/nodejs:18
+FROM public.ecr.aws/lambda/nodejs:20
 
-COPY ./bootstrap/index.js .
+COPY ./src/index.js .
   
 CMD [ "index.handler" ]

@@ -10,5 +10,7 @@ exports.handler = async (event, context) => {
         })
     }
 
+    console.log(response);
+
     return response;
 };

@@ -5,8 +5,8 @@
  */
 data "archive_file" "api_code_archive" {
   type        = "zip"
-  source_dir = "${path.root}/../bootstrap"
-  output_path = "${path.root}/../bootstrap.zip"
+  source_dir = "${path.root}/../src"
+  output_path = "${path.root}/../src.zip"
 }
 
 // S3 bucket in which we're gonna release our versioned zip archives
@@ -21,7 +21,7 @@ resource "aws_s3_bucket" "api_bucket_040209405785" {
  */
 resource "aws_s3_object" "api_code_archive" {
   bucket = aws_s3_bucket.api_bucket_040209405785.id
-  key    = "bootstrap.zip"
+  key    = "src.zip"
   source = data.archive_file.api_code_archive.output_path
   etag   = filemd5(data.archive_file.api_code_archive.output_path)
 
